@@ -1,0 +1,35 @@
+{
+  "name": "tech-roadmap-generator",
+  "version": "1.0.0",
+  "description": "A personalized tech career roadmap generator",
+  "homepage": "https://sazzadshakhbd.github.io/tech-roadmap-generator",
+  "scripts": {
+    "start": "npx parcel src/index.html",
+    "build": "npx parcel build src/index.html --public-url ./",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "keywords": [
+    "tech",
+    "career",
+    "roadmap",
+    "learning",
+    "path"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.10.0",
+    "styled-components": "^5.3.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.26.3",
+    "gh-pages": "^6.3.0",
+    "parcel": "^2.13.3",
+    "process": "^0.11.10"
+  }
+}
