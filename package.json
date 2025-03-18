@@ -5,7 +5,7 @@
   "homepage": "https://sazzadshakhbd.github.io/tech-roadmap-generator",
   "scripts": {
     "start": "npx parcel src/index.html",
-    "build": "npx parcel build src/index.html --public-url ./",
+    "build": "npx parcel build src/index.html --public-url /tech-roadmap-generator/",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
