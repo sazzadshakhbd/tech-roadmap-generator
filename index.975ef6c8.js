@@ -27238,7 +27238,7 @@ function App() {
                 lineNumber: 26,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.BrowserRouter), {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.HashRouter), {
                 children: [
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _navbarDefault.default), {}, void 0, false, {
                         fileName: "src/App.js",
@@ -36867,6 +36867,7 @@ const Button = (0, _styledComponentsDefault.default)((0, _reactRouterDom.Link))`
   &:hover {
     background-color: ${(props)=>props.theme.colors.secondary};
     transform: translateY(-2px);
+    color: white;
     box-shadow: ${(props)=>props.theme.shadows.large};
   }
 `;
@@ -36952,14 +36953,14 @@ const Home = ()=>{
                         children: "Tech Career Roadmap Generator"
                     }, void 0, false, {
                         fileName: "src/pages/Home.js",
-                        lineNumber: 121,
+                        lineNumber: 122,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Subtitle, {
                         children: "Create a personalized learning path for your tech career journey based on your skill level and preferred learning style."
                     }, void 0, false, {
                         fileName: "src/pages/Home.js",
-                        lineNumber: 122,
+                        lineNumber: 123,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Button, {
@@ -36967,13 +36968,13 @@ const Home = ()=>{
                         children: "Create Your Roadmap"
                     }, void 0, false, {
                         fileName: "src/pages/Home.js",
-                        lineNumber: 125,
+                        lineNumber: 126,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/pages/Home.js",
-                lineNumber: 120,
+                lineNumber: 121,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(CareerList, {
@@ -36983,38 +36984,38 @@ const Home = ()=>{
                                 children: career.icon
                             }, void 0, false, {
                                 fileName: "src/pages/Home.js",
-                                lineNumber: 131,
+                                lineNumber: 132,
                                 columnNumber: 13
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(CareerTitle, {
                                 children: career.title
                             }, void 0, false, {
                                 fileName: "src/pages/Home.js",
-                                lineNumber: 132,
+                                lineNumber: 133,
                                 columnNumber: 13
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
                                 children: career.description
                             }, void 0, false, {
                                 fileName: "src/pages/Home.js",
-                                lineNumber: 133,
+                                lineNumber: 134,
                                 columnNumber: 13
                             }, undefined)
                         ]
                     }, index, true, {
                         fileName: "src/pages/Home.js",
-                        lineNumber: 130,
+                        lineNumber: 131,
                         columnNumber: 11
                     }, undefined))
             }, void 0, false, {
                 fileName: "src/pages/Home.js",
-                lineNumber: 128,
+                lineNumber: 129,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/pages/Home.js",
-        lineNumber: 119,
+        lineNumber: 120,
         columnNumber: 5
     }, undefined);
 };
@@ -37055,6 +37056,11 @@ const pulse = (0, _styledComponents.keyframes)`
   100% { transform: scale(1); }
 `;
 // Update FormContainer
+const glowAnimation = (0, _styledComponents.keyframes)`
+  0% { box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+  50% { box-shadow: 0 0 20px ${(props)=>props.theme.colors.primary}40; }
+  100% { box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+`;
 const FormContainer = (0, _styledComponentsDefault.default).div`
   max-width: 800px;
   margin: 3rem auto;
@@ -37065,10 +37071,40 @@ const FormContainer = (0, _styledComponentsDefault.default).div`
   animation: ${fadeIn} 0.6s ease-out;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    animation: ${glowAnimation} 2s infinite;
+    transform: translateY(-5px);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at center,
+      ${(props)=>props.theme.colors.primary}10,
+      transparent 70%
+    );
+    opacity: 0.5;
+    z-index: -1;
+    animation: rotate 20s linear infinite;
+  }
   
   @media (max-width: ${(props)=>props.theme.breakpoints.mobile}) {
     margin: 1.5rem auto;
     padding: ${(props)=>props.theme.spacing.md};
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 `;
 _c = FormContainer;
@@ -37094,12 +37130,29 @@ const Title = (0, _styledComponentsDefault.default).h1`
 _c1 = Title;
 // Add a progress bar component
 const ProgressBar = (0, _styledComponentsDefault.default).div`
-  height: 6px;
-  background: #e2e8f0;
-  border-radius: 3px;
+  height: 8px;
+  background: rgba(226, 232, 240, 0.4);
+  border-radius: 4px;
   margin: 2rem 0;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.1) 25%, 
+      rgba(255, 255, 255, 0.2) 50%, 
+      rgba(255, 255, 255, 0.1) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+  }
   
   &::after {
     content: '';
@@ -37108,9 +37161,15 @@ const ProgressBar = (0, _styledComponentsDefault.default).div`
     left: 0;
     height: 100%;
     width: ${(props)=>props.progress || '0%'};
-    background: linear-gradient(to right, ${(props)=>props.theme.colors.primary}, ${(props)=>props.theme.colors.secondary});
-    border-radius: 3px;
-    transition: width 0.5s ease-in-out;
+    background: linear-gradient(45deg, ${(props)=>props.theme.colors.primary}, ${(props)=>props.theme.colors.secondary});
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px ${(props)=>props.theme.colors.primary}40;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
 `;
 _c2 = ProgressBar;
@@ -37133,21 +37192,41 @@ const Label = (0, _styledComponentsDefault.default).label`
 _c4 = Label;
 const Select = (0, _styledComponentsDefault.default).select`
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
+  padding: 0.875rem 1.25rem;
+  border: 2px solid rgba(226, 232, 240, 0.8);
   border-radius: ${(props)=>props.theme.borderRadius.medium};
   font-size: 1rem;
-  background-color: white;
-  transition: ${(props)=>props.theme.transitions.default};
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
   
   &:focus {
     outline: none;
     border-color: ${(props)=>props.theme.colors.primary};
     box-shadow: 0 0 0 3px ${(props)=>props.theme.colors.primary}30;
+    background-color: white;
   }
   
   &:hover {
     border-color: ${(props)=>props.theme.colors.primary}80;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  & option {
+    background-color: white;
+    color: ${(props)=>props.theme.colors.text};
+    padding: 0.5rem;
   }
 `;
 _c5 = Select;
@@ -37168,18 +37247,42 @@ const CheckboxLabel = (0, _styledComponentsDefault.default).label`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 0.625rem 1rem;
-  background-color: ${(props)=>props.checked ? props.theme.colors.primary : '#f1f5f9'};
+  padding: 0.75rem 1.25rem;
+  background-color: ${(props)=>props.checked ? props.theme.colors.primary : 'rgba(241, 245, 249, 0.8)'};
   color: ${(props)=>props.checked ? 'white' : props.theme.colors.text};
   border-radius: ${(props)=>props.theme.borderRadius.medium};
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: ${(props)=>props.checked ? props.theme.fontWeights.medium : props.theme.fontWeights.normal};
-  box-shadow: ${(props)=>props.checked ? props.theme.shadows.small : 'none'};
+  box-shadow: ${(props)=>props.checked ? `0 4px 12px ${props.theme.colors.primary}40` : 'none'};
+  backdrop-filter: blur(8px);
+  border: 1px solid ${(props)=>props.checked ? props.theme.colors.primary : 'rgba(226, 232, 240, 0.8)'};
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, ${(props)=>props.theme.colors.primary}20, transparent 50%);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease-out;
+  }
 
   &:hover {
-    background-color: ${(props)=>props.checked ? props.theme.colors.primary : '#e2e8f0'};
+    background-color: ${(props)=>props.checked ? props.theme.colors.primary : 'rgba(226, 232, 240, 0.9)'};
     transform: translateY(-2px);
-    box-shadow: ${(props)=>props.checked ? props.theme.shadows.medium : '0 2px 4px rgba(0, 0, 0, 0.1)'};
+    box-shadow: ${(props)=>props.checked ? `0 6px 16px ${props.theme.colors.primary}50` : '0 4px 8px rgba(0, 0, 0, 0.1)'};
+
+    &::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 `;
 _c7 = CheckboxLabel;
@@ -37191,7 +37294,7 @@ _c8 = Checkbox;
 const Button = (0, _styledComponentsDefault.default).button`
   display: block;
   width: 100%;
-  padding: 0.875rem;
+  padding: 1rem;
   background: linear-gradient(45deg, ${(props)=>props.theme.colors.primary}, ${(props)=>props.theme.colors.secondary});
   color: white;
   border: none;
@@ -37199,8 +37302,43 @@ const Button = (0, _styledComponentsDefault.default).button`
   font-size: 1.1rem;
   font-weight: ${(props)=>props.theme.fontWeights.semibold};
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: ${(props)=>props.theme.shadows.medium};
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, ${(props)=>props.theme.colors.secondary}, ${(props)=>props.theme.colors.primary});
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${(props)=>props.theme.shadows.large};
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: ${(props)=>props.theme.shadows.small};
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px ${(props)=>props.theme.colors.primary}40;
+  }
   margin-top: ${(props)=>props.theme.spacing.lg};
   position: relative;
   overflow: hidden;
@@ -37322,19 +37460,35 @@ const RoadmapGenerator = ()=>{
     ]);
     const handleChange = (e)=>{
         const { name, value } = e.target;
-        setFormData({
+        // Create a new form data object
+        let newFormData = {
             ...formData,
             [name]: value
-        });
+        };
+        // Reset subsequent steps when changing a previous step
+        if (name === 'career') {
+            // If career changes, reset skill level, learning styles, and time commitment
+            newFormData.skillLevel = '';
+            newFormData.learningStyles = [];
+            newFormData.timeCommitment = '';
+        } else if (name === 'skillLevel') {
+            // If skill level changes, reset learning styles and time commitment
+            newFormData.learningStyles = [];
+            newFormData.timeCommitment = '';
+        } else if (name === 'learningStyles') // If learning styles change, reset time commitment
+        newFormData.timeCommitment = '';
+        setFormData(newFormData);
     };
     const handleCheckboxChange = (style)=>{
         const updatedStyles = formData.learningStyles.includes(style) ? formData.learningStyles.filter((s)=>s !== style) : [
             ...formData.learningStyles,
             style
         ];
+        // Reset time commitment if learning styles change
         setFormData({
             ...formData,
-            learningStyles: updatedStyles
+            learningStyles: updatedStyles,
+            timeCommitment: '' // Reset time commitment when learning styles change
         });
     };
     const handleSubmit = (e)=>{
@@ -37349,14 +37503,14 @@ const RoadmapGenerator = ()=>{
                 children: "Create Your Personalized Roadmap"
             }, void 0, false, {
                 fileName: "src/pages/RoadmapGenerator.js",
-                lineNumber: 312,
+                lineNumber: 468,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(ProgressBar, {
                 progress: `${progress}%`
             }, void 0, false, {
                 fileName: "src/pages/RoadmapGenerator.js",
-                lineNumber: 313,
+                lineNumber: 469,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(StepIndicator, {
@@ -37369,7 +37523,7 @@ const RoadmapGenerator = ()=>{
                                 children: "1"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 317,
+                                lineNumber: 473,
                                 columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(StepLabel, {
@@ -37377,13 +37531,13 @@ const RoadmapGenerator = ()=>{
                                 children: "Career"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 318,
+                                lineNumber: 474,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 316,
+                        lineNumber: 472,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -37394,7 +37548,7 @@ const RoadmapGenerator = ()=>{
                                 children: "2"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 321,
+                                lineNumber: 477,
                                 columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(StepLabel, {
@@ -37402,13 +37556,13 @@ const RoadmapGenerator = ()=>{
                                 children: "Skills"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 322,
+                                lineNumber: 478,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 320,
+                        lineNumber: 476,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -37419,7 +37573,7 @@ const RoadmapGenerator = ()=>{
                                 children: "3"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 325,
+                                lineNumber: 481,
                                 columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(StepLabel, {
@@ -37427,13 +37581,13 @@ const RoadmapGenerator = ()=>{
                                 children: "Learning"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 326,
+                                lineNumber: 482,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 324,
+                        lineNumber: 480,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -37444,7 +37598,7 @@ const RoadmapGenerator = ()=>{
                                 children: "4"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 329,
+                                lineNumber: 485,
                                 columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(StepLabel, {
@@ -37452,19 +37606,19 @@ const RoadmapGenerator = ()=>{
                                 children: "Time"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 330,
+                                lineNumber: 486,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 328,
+                        lineNumber: 484,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/pages/RoadmapGenerator.js",
-                lineNumber: 315,
+                lineNumber: 471,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("form", {
@@ -37478,7 +37632,7 @@ const RoadmapGenerator = ()=>{
                                 children: "Choose a Career Path"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 336,
+                                lineNumber: 492,
                                 columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Select, {
@@ -37493,7 +37647,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Select a career path"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 344,
+                                        lineNumber: 500,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37501,7 +37655,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Frontend Developer"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 345,
+                                        lineNumber: 501,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37509,7 +37663,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Backend Developer"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 346,
+                                        lineNumber: 502,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37517,7 +37671,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Data Scientist"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 347,
+                                        lineNumber: 503,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37525,19 +37679,19 @@ const RoadmapGenerator = ()=>{
                                         children: "DevOps Engineer"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 348,
+                                        lineNumber: 504,
                                         columnNumber: 13
                                     }, undefined)
                                 ]
                             }, void 0, true, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 337,
+                                lineNumber: 493,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 335,
+                        lineNumber: 491,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(FormGroup, {
@@ -37548,7 +37702,7 @@ const RoadmapGenerator = ()=>{
                                 children: "Your Current Skill Level"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 353,
+                                lineNumber: 509,
                                 columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Select, {
@@ -37557,13 +37711,14 @@ const RoadmapGenerator = ()=>{
                                 value: formData.skillLevel,
                                 onChange: handleChange,
                                 required: true,
+                                disabled: !formData.career,
                                 children: [
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
                                         value: "",
                                         children: "Select your skill level"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 361,
+                                        lineNumber: 518,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37571,7 +37726,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Beginner"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 362,
+                                        lineNumber: 519,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37579,7 +37734,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Intermediate"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 363,
+                                        lineNumber: 520,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37587,19 +37742,19 @@ const RoadmapGenerator = ()=>{
                                         children: "Advanced"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 364,
+                                        lineNumber: 521,
                                         columnNumber: 13
                                     }, undefined)
                                 ]
                             }, void 0, true, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 354,
+                                lineNumber: 510,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 352,
+                        lineNumber: 508,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(FormGroup, {
@@ -37609,7 +37764,7 @@ const RoadmapGenerator = ()=>{
                                 children: "Preferred Learning Styles"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 369,
+                                lineNumber: 526,
                                 columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(CheckboxGroup, {
@@ -37621,32 +37776,37 @@ const RoadmapGenerator = ()=>{
                                     'Courses'
                                 ].map((style)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(CheckboxLabel, {
                                         checked: formData.learningStyles.includes(style.toLowerCase()),
+                                        style: {
+                                            opacity: !formData.skillLevel ? 0.5 : 1,
+                                            pointerEvents: !formData.skillLevel ? 'none' : 'auto'
+                                        },
                                         children: [
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Checkbox, {
                                                 type: "checkbox",
                                                 checked: formData.learningStyles.includes(style.toLowerCase()),
-                                                onChange: ()=>handleCheckboxChange(style.toLowerCase())
+                                                onChange: ()=>handleCheckboxChange(style.toLowerCase()),
+                                                disabled: !formData.skillLevel
                                             }, void 0, false, {
                                                 fileName: "src/pages/RoadmapGenerator.js",
-                                                lineNumber: 376,
+                                                lineNumber: 534,
                                                 columnNumber: 17
                                             }, undefined),
                                             style
                                         ]
                                     }, style, true, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 372,
+                                        lineNumber: 529,
                                         columnNumber: 15
                                     }, undefined))
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 370,
+                                lineNumber: 527,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 368,
+                        lineNumber: 525,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(FormGroup, {
@@ -37657,7 +37817,7 @@ const RoadmapGenerator = ()=>{
                                 children: "Time Commitment"
                             }, void 0, false, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 388,
+                                lineNumber: 547,
                                 columnNumber: 11
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Select, {
@@ -37666,13 +37826,14 @@ const RoadmapGenerator = ()=>{
                                 value: formData.timeCommitment,
                                 onChange: handleChange,
                                 required: true,
+                                disabled: formData.learningStyles.length === 0,
                                 children: [
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
                                         value: "",
                                         children: "Select time commitment"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 396,
+                                        lineNumber: 556,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37680,7 +37841,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Minimal (1-5 hours/week)"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 397,
+                                        lineNumber: 557,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37688,7 +37849,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Moderate (5-10 hours/week)"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 398,
+                                        lineNumber: 558,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37696,7 +37857,7 @@ const RoadmapGenerator = ()=>{
                                         children: "Dedicated (10-20 hours/week)"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 399,
+                                        lineNumber: 559,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("option", {
@@ -37704,19 +37865,19 @@ const RoadmapGenerator = ()=>{
                                         children: "Intensive (20+ hours/week)"
                                     }, void 0, false, {
                                         fileName: "src/pages/RoadmapGenerator.js",
-                                        lineNumber: 400,
+                                        lineNumber: 560,
                                         columnNumber: 13
                                     }, undefined)
                                 ]
                             }, void 0, true, {
                                 fileName: "src/pages/RoadmapGenerator.js",
-                                lineNumber: 389,
+                                lineNumber: 548,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 387,
+                        lineNumber: 546,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Button, {
@@ -37725,19 +37886,19 @@ const RoadmapGenerator = ()=>{
                         children: "Generate Your Roadmap"
                     }, void 0, false, {
                         fileName: "src/pages/RoadmapGenerator.js",
-                        lineNumber: 404,
+                        lineNumber: 564,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/pages/RoadmapGenerator.js",
-                lineNumber: 334,
+                lineNumber: 490,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/pages/RoadmapGenerator.js",
-        lineNumber: 311,
+        lineNumber: 467,
         columnNumber: 5
     }, undefined);
 };
