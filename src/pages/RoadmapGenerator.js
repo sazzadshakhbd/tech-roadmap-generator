@@ -16,6 +16,12 @@ const pulse = keyframes`
 `;
 
 // Update FormContainer
+const glowAnimation = keyframes`
+  0% { box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+  50% { box-shadow: 0 0 20px ${props => props.theme.colors.primary}40; }
+  100% { box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+`;
+
 const FormContainer = styled.div`
   max-width: 800px;
   margin: 3rem auto;
@@ -26,10 +32,40 @@ const FormContainer = styled.div`
   animation: ${fadeIn} 0.6s ease-out;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    animation: ${glowAnimation} 2s infinite;
+    transform: translateY(-5px);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at center,
+      ${props => props.theme.colors.primary}10,
+      transparent 70%
+    );
+    opacity: 0.5;
+    z-index: -1;
+    animation: rotate 20s linear infinite;
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     margin: 1.5rem auto;
     padding: ${props => props.theme.spacing.md};
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 `;
 
@@ -55,12 +91,29 @@ const Title = styled.h1`
 
 // Add a progress bar component
 const ProgressBar = styled.div`
-  height: 6px;
-  background: #e2e8f0;
-  border-radius: 3px;
+  height: 8px;
+  background: rgba(226, 232, 240, 0.4);
+  border-radius: 4px;
   margin: 2rem 0;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.1) 25%, 
+      rgba(255, 255, 255, 0.2) 50%, 
+      rgba(255, 255, 255, 0.1) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+  }
   
   &::after {
     content: '';
@@ -69,9 +122,15 @@ const ProgressBar = styled.div`
     left: 0;
     height: 100%;
     width: ${props => props.progress || '0%'};
-    background: linear-gradient(to right, ${props => props.theme.colors.primary}, ${props => props.theme.colors.secondary});
-    border-radius: 3px;
-    transition: width 0.5s ease-in-out;
+    background: linear-gradient(45deg, ${props => props.theme.colors.primary}, ${props => props.theme.colors.secondary});
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px ${props => props.theme.colors.primary}40;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
 `;
 
@@ -94,21 +153,41 @@ const Label = styled.label`
 
 const Select = styled.select`
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
+  padding: 0.875rem 1.25rem;
+  border: 2px solid rgba(226, 232, 240, 0.8);
   border-radius: ${props => props.theme.borderRadius.medium};
   font-size: 1rem;
-  background-color: white;
-  transition: ${props => props.theme.transitions.default};
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
   
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary};
     box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}30;
+    background-color: white;
   }
   
   &:hover {
     border-color: ${props => props.theme.colors.primary}80;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  & option {
+    background-color: white;
+    color: ${props => props.theme.colors.text};
+    padding: 0.5rem;
   }
 `;
 
@@ -129,18 +208,42 @@ const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 0.625rem 1rem;
-  background-color: ${props => props.checked ? props.theme.colors.primary : '#f1f5f9'};
+  padding: 0.75rem 1.25rem;
+  background-color: ${props => props.checked ? props.theme.colors.primary : 'rgba(241, 245, 249, 0.8)'};
   color: ${props => props.checked ? 'white' : props.theme.colors.text};
   border-radius: ${props => props.theme.borderRadius.medium};
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: ${props => props.checked ? props.theme.fontWeights.medium : props.theme.fontWeights.normal};
-  box-shadow: ${props => props.checked ? props.theme.shadows.small : 'none'};
+  box-shadow: ${props => props.checked ? `0 4px 12px ${props.theme.colors.primary}40` : 'none'};
+  backdrop-filter: blur(8px);
+  border: 1px solid ${props => props.checked ? props.theme.colors.primary : 'rgba(226, 232, 240, 0.8)'};
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, ${props => props.theme.colors.primary}20, transparent 50%);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease-out;
+  }
 
   &:hover {
-    background-color: ${props => props.checked ? props.theme.colors.primary : '#e2e8f0'};
+    background-color: ${props => props.checked ? props.theme.colors.primary : 'rgba(226, 232, 240, 0.9)'};
     transform: translateY(-2px);
-    box-shadow: ${props => props.checked ? props.theme.shadows.medium : '0 2px 4px rgba(0, 0, 0, 0.1)'};
+    box-shadow: ${props => props.checked ? `0 6px 16px ${props.theme.colors.primary}50` : '0 4px 8px rgba(0, 0, 0, 0.1)'};
+
+    &::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 `;
 
@@ -152,7 +255,7 @@ const Checkbox = styled.input`
 const Button = styled.button`
   display: block;
   width: 100%;
-  padding: 0.875rem;
+  padding: 1rem;
   background: linear-gradient(45deg, ${props => props.theme.colors.primary}, ${props => props.theme.colors.secondary});
   color: white;
   border: none;
@@ -160,8 +263,43 @@ const Button = styled.button`
   font-size: 1.1rem;
   font-weight: ${props => props.theme.fontWeights.semibold};
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: ${props => props.theme.shadows.medium};
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, ${props => props.theme.colors.secondary}, ${props => props.theme.colors.primary});
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.large};
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: ${props => props.theme.shadows.small};
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}40;
+  }
   margin-top: ${props => props.theme.spacing.lg};
   position: relative;
   overflow: hidden;
@@ -282,10 +420,26 @@ const RoadmapGenerator = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    
+    // Create a new form data object
+    let newFormData = { ...formData, [name]: value };
+    
+    // Reset subsequent steps when changing a previous step
+    if (name === 'career') {
+      // If career changes, reset skill level, learning styles, and time commitment
+      newFormData.skillLevel = '';
+      newFormData.learningStyles = [];
+      newFormData.timeCommitment = '';
+    } else if (name === 'skillLevel') {
+      // If skill level changes, reset learning styles and time commitment
+      newFormData.learningStyles = [];
+      newFormData.timeCommitment = '';
+    } else if (name === 'learningStyles') {
+      // If learning styles change, reset time commitment
+      newFormData.timeCommitment = '';
+    }
+    
+    setFormData(newFormData);
   };
 
   const handleCheckboxChange = (style) => {
@@ -293,9 +447,11 @@ const RoadmapGenerator = () => {
       ? formData.learningStyles.filter(s => s !== style)
       : [...formData.learningStyles, style];
     
+    // Reset time commitment if learning styles change
     setFormData({
       ...formData,
       learningStyles: updatedStyles,
+      timeCommitment: '' // Reset time commitment when learning styles change
     });
   };
 
@@ -357,6 +513,7 @@ const RoadmapGenerator = () => {
             value={formData.skillLevel} 
             onChange={handleChange}
             required
+            disabled={!formData.career}
           >
             <option value="">Select your skill level</option>
             <option value="beginner">Beginner</option>
@@ -372,11 +529,13 @@ const RoadmapGenerator = () => {
               <CheckboxLabel 
                 key={style} 
                 checked={formData.learningStyles.includes(style.toLowerCase())}
+                style={{ opacity: !formData.skillLevel ? 0.5 : 1, pointerEvents: !formData.skillLevel ? 'none' : 'auto' }}
               >
                 <Checkbox 
                   type="checkbox" 
                   checked={formData.learningStyles.includes(style.toLowerCase())}
                   onChange={() => handleCheckboxChange(style.toLowerCase())}
+                  disabled={!formData.skillLevel}
                 />
                 {style}
               </CheckboxLabel>
@@ -392,6 +551,7 @@ const RoadmapGenerator = () => {
             value={formData.timeCommitment} 
             onChange={handleChange}
             required
+            disabled={formData.learningStyles.length === 0}
           >
             <option value="">Select time commitment</option>
             <option value="minimal">Minimal (1-5 hours/week)</option>

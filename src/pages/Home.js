@@ -53,6 +53,7 @@ const Button = styled(Link)`
   &:hover {
     background-color: ${props => props.theme.colors.secondary};
     transform: translateY(-2px);
+    color: white;
     box-shadow: ${props => props.theme.shadows.large};
   }
 `;
